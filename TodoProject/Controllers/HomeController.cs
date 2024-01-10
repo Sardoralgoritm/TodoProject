@@ -1,32 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using MVCRep.Models.Repositories;
 using TodoProject.Models;
 
 namespace TodoProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ITodoService todoService) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ITodoService _todoService = todoService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
+            var todos = await _todoService.GetAllTodosAsync();
+            var completed = todos.Where(i => i.IsCompleted == true).ToList();
+            ViewModel vm = new ViewModel()
+            {
+                AllTodos = todos,
+                CompletedTodos = completed
+            };
+            return View(vm);
         }
 
-        public IActionResult Index()
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ViewModel vm)
         {
-            return View();
+            await _todoService.CreateAsync(vm.AddTodoView);
+            return RedirectToAction("index");
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
         {
-            return View();
+            await _todoService.UpdateAsync(id);
+            return RedirectToAction("index");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public async Task<IActionResult> UpdateCompleted(string id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            await _todoService.UpdateCompleteAsync(id);
+            return RedirectToAction("index");
         }
     }
 }

@@ -1,8 +1,90 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Todo home Page";
 }
+@model ViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+
+
+<body>
+    <header class="mb-10">
+        <div class="navbar bg-base-100  mx-auto">
+            <a class="btn btn-ghost text-xl">Todo app</a>
+            <button class="btn btn-success mr-10" onclick="addTodoButton.showModal()">Add Todo</button>
+        </div>
+    </header>
+
+    <section class="mx-auto px-5">
+        <div role="tablist" class="tabs tabs-lifted">
+            <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="All" checked />
+            <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+                <div class="flex flex-col gap-5" id="allTodo">
+                    @foreach (var todo in Model.AllTodos)
+                    {
+                        <div class="card w-full bg-base-100 shadow-xl">
+                            <div class="card-body">
+                                <label class="label cursor-pointer">
+                                    <span class="card-title">
+                                        @todo.Content
+                                    </span>
+                                    <input type="checkbox" value="@todo.Id" Checked="@todo.IsCompleted" class="checkbox" onchange="updateCompleted(this)" />
+                                </label>
+
+                                <div class="card-actions justify-end">
+                                    <button class="btn btn-active btn-primary">Edit</button>
+                                    <button class="btn btn-error">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                      } 
+                </div>
+            </div>
+
+            <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Completed"/>
+            <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+                <div class="flex flex-col gap-5" id="completedTodo">
+                    @foreach (var todo in Model.CompletedTodos)
+                    {
+                        <div class="card w-full bg-base-100 shadow-xl">
+                            <div class="card-body">
+                                <label class="label cursor-pointer">
+                                    <span class="card-title">
+                                        @todo.Content
+                                    </span>
+                                    <input type="checkbox" value="@todo.Id" checked="@todo.IsCompleted" class="checkbox" onchange="updateCompleted(this)" />
+                                </label>
+
+                                <div class="card-actions justify-end">
+                                    <button class="btn btn-active btn-primary">Edit</button>
+                                    <button class="btn btn-error">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+   <dialog id="addTodoButton" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg mb-10">Add your todo</h3>
+    <form id="todoDataForm" method="post">
+     <textarea class="textarea w-full textarea-warning min-h-[240px]" name="content" placeholder="Enter your todo" minLength="5" maxlength="1000"></textarea>
+     <div class="flex pt-5 justify-end">
+     <button class="btn btn-accent">Submit</button>
+     </div>
+    </form>
+  </div>
+</dialog>
+
+
+</body>
