@@ -9,7 +9,7 @@
 todoDataForm.onsubmit = (e) => {
     e.preventDefault()
     const data = e.target[0].value
-    $.post('/Home/UpdateCompleted', data, function () {
+    $.post('/Home/Add', data, function () {
         location.reload();
     });
 }
