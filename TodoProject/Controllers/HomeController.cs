@@ -3,7 +3,6 @@ using MVCRep.Models.Dtos;
 using MVCRep.Models.Repositories;
 using TodoProject.Models;
 
-
 namespace TodoProject.Controllers
 {
     public class HomeController(ITodoService todoService) : Controller
@@ -24,17 +23,21 @@ namespace TodoProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(string vm)
+        public async Task<IActionResult> Add(string content)
         {
-            AddTodoView addTodo = new AddTodoView() {Content = vm};
-            await _todoService.CreateAsync(addTodo);
+            AddTodoView todo = new AddTodoView()
+            {
+                Content = content,
+                IsCompleted = false
+            };
+            await _todoService.CreateAsync(todo);
             return RedirectToAction("index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(string id)
+        [HttpPost]
+        public async Task<IActionResult> Update(string id, string content)
         {
-            await _todoService.UpdateAsync(id);
+            await _todoService.UpdateAsync(id, content);
             return RedirectToAction("index");
         }
 
@@ -42,6 +45,13 @@ namespace TodoProject.Controllers
         public async Task<IActionResult> UpdateCompleted(string id)
         {
             await _todoService.UpdateCompleteAsync(id);
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _todoService.DeleteTodoAsync(id);
             return RedirectToAction("index");
         }
     }

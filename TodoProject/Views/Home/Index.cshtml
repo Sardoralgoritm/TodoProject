@@ -35,8 +35,8 @@
                                 </label>
 
                                 <div class="card-actions justify-end">
-                                    <button class="btn btn-active btn-primary">Edit</button>
-                                    <button class="btn btn-error" onclick="confirmDelete()">Delete</button>
+                                    <button class="btn btn-active btn-primary" value="@todo.Id" onclick="showEditTodo(this)">Edit</button>
+                                    <button class="btn btn-error" value="@todo.Id" onclick="deleteTodo(this)">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,8 @@
                                 </label>
 
                                 <div class="card-actions justify-end">
-                                    <button class="btn btn-active btn-primary">Edit</button>
-                                    <button class="btn btn-error">Delete</button>
+                                    <button class="btn btn-active btn-primary" value="@todo.Id" onclick="showEditTodo(this)">Edit</button>
+                                    <button class="btn btn-error" value="@todo.Id" onclick="deleteTodo(this)">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -85,6 +85,21 @@
     </form>
   </div>
 </dialog>
+
+    <dialog id="editTodoButton" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-10">Change your todo</h3>
+            <form id="editDataForm" method="post">
+                <textarea class="textarea w-full textarea-warning min-h-[240px]" name="content" minLength="5" maxlength="1000" id="textareaTodo"></textarea>
+                <div class="flex pt-5 justify-end">
+                    <button class="btn btn-accent">Apply</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
 
 </body>

@@ -8,22 +8,39 @@
 
 todoDataForm.onsubmit = (e) => {
     e.preventDefault()
-    const data = e.target[0].value
-    console.log(data);
-    console.log(typeof data);
-    $.post('/Home/Add', {vm: data}, function () {
+    const content = e.target[0].value
+    $.post('/Home/Add', {content}, function () {
         location.reload();
     });
 }
 
-function confirmDelete() {
-    var ishonch = confirm("Ishonchingiz komilmi?");
+editDataForm.onsubmit = (e) => {
+    e.preventDefault()
+    const content = e.target[0].value
+    const id = e.target[0].dataset.todoId
+    console.log(content)
+    console.log(id)
+    $.post('/Home/Update', { id: id, content: content }, function () {
+        location.reload();
+    });
+}
 
-    if (ishonch) {
-        alert("Delete tugmasi bosildi va foydalanuvchi ishonch bildirdi!");
-    } else {
-        alert("Delete tugmasi bosildi, lekin foydalanuvchi ishonch bermadi!");
-    }
+function showEditTodo(e) {
+    editTodoButton.showModal()
+
+    const text = e.parentElement.parentElement.querySelector(".card-title").innerText
+    textareaTodo.value = text
+    textareaTodo.dataset.todoId = e.value
+    textareaTodo.focus()
+}
+
+
+
+function deleteTodo({ value }) {
+    console.log(value)
+    $.post('/Home/Delete', { id: value }, function () {
+        location.reload();
+    });
 }
 
 if (allTodo.children.length === 0) {
