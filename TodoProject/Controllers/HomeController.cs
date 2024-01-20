@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using MVCRep.Models.Dtos;
 using MVCRep.Models.Repositories;
 using TodoProject.Models;
+
 
 namespace TodoProject.Controllers
 {
@@ -22,9 +24,10 @@ namespace TodoProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(ViewModel vm)
+        public async Task<IActionResult> Add(string vm)
         {
-            await _todoService.CreateAsync(vm.AddTodoView);
+            AddTodoView addTodo = new AddTodoView() {Content = vm};
+            await _todoService.CreateAsync(addTodo);
             return RedirectToAction("index");
         }
 
