@@ -16,6 +16,16 @@ todoDataForm.onsubmit = (e) => {
     });
 }
 
+function confirmDelete() {
+    var ishonch = confirm("Ishonchingiz komilmi?");
+
+    if (ishonch) {
+        alert("Delete tugmasi bosildi va foydalanuvchi ishonch bildirdi!");
+    } else {
+        alert("Delete tugmasi bosildi, lekin foydalanuvchi ishonch bermadi!");
+    }
+}
+
 if (allTodo.children.length === 0) {
     allTodo.innerHTML = "No todos"
 }
